@@ -8,8 +8,24 @@
     <script src="https://cdn.staticfile.org/ionic/1.3.2/js/ionic.bundle.min.js"></script>
     <script type="text/javascript">
         angular.module('ionicApp', ['ionic'])
+        /*
+        当用户在你的app中浏览时，ionic能够检测到浏览历史。
+        通过检测浏览历史，实现向左或向右滑动时可以正确转换视图。
+        采用AngularUI路由器模块等应用程序接口可以分为不同的$state(状态)。
+        Angular的核心为路由服务，URLs可以用来控制视图。
 
-            .config(function($stateProvider, $urlRouterProvider) {
+        AngularUI路由提供了一个更强大的状态管理，即状态可以被命名，嵌套， 以及合并视图，
+        允许一个以上模板呈现在同一个页面。
+        此外，每个状态无需绑定到一个URL，并且数据可以更灵活地推送到每个状态。
+
+        $stateProvider 会查询url,
+        看是否匹配 index 状态值, 再加载index.html到<ion-nav-view
+        页面加载都是通过URLs配置的
+        在Angular中创建模板最一个简单的方式就是直接将他放到html模板文件中并且用
+        <script type="text/ng-template">
+        模板会很快的加载并被缓存就不用通过网络再去加载
+         */
+            .config(function ($stateProvider, $urlRouterProvider) {
 
                 $stateProvider
                     .state('tabs', {
@@ -72,19 +88,21 @@
 
             })
 
-            .controller('HomeTabCtrl', function($scope) {
+            .controller('HomeTabCtrl', function ($scope) {
                 console.log('HomeTabCtrl');
             });
     </script>
 </head>
 
 <body>
-
+<!--创建一个顶部工具栏，当程序状态改变时更新。 -->
 <ion-nav-bar class="bar-positive">
+    <!-- 在一个ionNavBar中创建一个按钮。当用户在当前导航能够后退时，将显示后退按钮。 -->
     <ion-nav-back-button>
     </ion-nav-back-button>
 </ion-nav-bar>
 
+<!-- 选择ionNavView作为顶层指令。显示一个页眉栏我们用 ionNavBar 指令通过导航更新 -->
 <ion-nav-view></ion-nav-view>
 
 
@@ -106,6 +124,23 @@
     </ion-tabs>
 </script>
 
+<!--
+视图都被缓存了能提升性能。当跳出视图时，他的元素被保留在Dom中，并且它的作用域也从 $watch 中移除。
+当我们跳到一个已经被缓存了的视图，视图会被激活，它的作用域被重新连接上，Dom中也保存了他的元素。
+这也允许保持以前的视图滚动位置。
+
+缓存也可以通过很多方式来开启和关闭的。默认Ionic将最大缓存页面数为10个，并且这并不是唯一可以定制的，
+应用程序可以显式状态来设置视图应不应该被缓存。
+
+注意，因为我们是缓存这些视图，我们没有破坏作用域。相反, 它的作用域也从 $watch 中移除。
+
+因为接下来的观看作用域并没有被摧毁和重建，控制器也没被再次加载。
+如果app/controller需要知道什么时候进入或离开一个视图，再视图事件从 ionView 作用内发出,
+例如 $ionicView.enter， 可能是有用的。
+ion-view
+隶属于ionNavView 一个内容的容器用 于展示视图或导航栏信息
+view-title显示在父ionNavBar的标题。
+-->
 <script id="templates/home.html" type="text/ng-template">
     <ion-view view-title="Home">
         <ion-content class="padding">
@@ -121,7 +156,8 @@
         <ion-content class="padding">
             <p>Banging your head against a wall uses 150 calories an hour.</p>
             <p>Dogs have four toes on their hind feet, and five on their front feet.</p>
-            <p>The ant can lift 50 times its own weight, can pull 30 times its own weight and always falls over on its right side when intoxicated.</p>
+            <p>The ant can lift 50 times its own weight, can pull 30 times its own weight and always falls over on its
+                right side when intoxicated.</p>
             <p>A cockroach will live nine days without it's head, before it starves to death.</p>
             <p>Polar bears are left handed.</p>
             <p>
@@ -140,7 +176,8 @@
             <p>11% of the world is left-handed.</p>
             <p>1 in 8 Americans has worked at a McDonalds restaurant.</p>
             <p>$283,200 is the absolute highest amount of money you can win on Jeopardy.</p>
-            <p>101 Dalmatians, Peter Pan, Lady and the Tramp, and Mulan are the only Disney cartoons where both parents are present and don't die throughout the movie.</p>
+            <p>101 Dalmatians, Peter Pan, Lady and the Tramp, and Mulan are the only Disney cartoons where both parents
+                are present and don't die throughout the movie.</p>
             <p>
                 <a class="button icon ion-home" href="#/tab/home"> Home</a>
                 <a class="button icon ion-chevron-left" href="#/tab/facts"> Scientific Facts</a>
@@ -153,7 +190,8 @@
     <ion-view view-title="About">
         <ion-content class="padding">
             <h3>Create hybrid mobile apps with the web technologies you love.</h3>
-            <p>Free and open source, Ionic offers a library of mobile-optimized HTML, CSS and JS components for building highly interactive apps.</p>
+            <p>Free and open source, Ionic offers a library of mobile-optimized HTML, CSS and JS components for building
+                highly interactive apps.</p>
             <p>Built with Sass and optimized for AngularJS.</p>
             <p>
                 <a class="button icon icon-right ion-chevron-right" href="#/tab/navstack">Tabs Nav Stack</a>

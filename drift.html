@@ -1,0 +1,70 @@
+<html ng-app="ionicApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>菜鸟教程(runoob.com)</title>
+    <link href="https://cdn.staticfile.org/ionic/1.3.2/css/ionic.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/ionic/1.3.2/js/ionic.bundle.min.js"></script>
+    <script type="text/javascript">
+        angular.module('ionicApp', ['ionic'])
+            .controller('AppCtrl',
+                ['$scope', '$ionicPopover', '$timeout', function ($scope, $ionicPopover, $timeout) {
+/*
+$ionicPopover 是一个可以浮在app内容上的一个视图框。
+
+可以实现以下功能点：
+
+在当前页面显示更多信息。
+选择一些工具或配置。
+在页面提供一个操作列表。
+ */
+                $scope.popover = $ionicPopover.fromTemplateUrl('my-popover.html', {
+                    scope: $scope
+                });
+
+                // .fromTemplateUrl() 方法
+                $ionicPopover.fromTemplateUrl('my-popover.html', {
+                    scope: $scope
+                }).then(function (popover) {
+                    $scope.popover = popover;
+                });
+
+
+                $scope.openPopover = function ($event) {
+                    $scope.popover.show($event);
+                };
+                $scope.closePopover = function () {
+                    $scope.popover.hide();
+                };
+                // 清除浮动框
+                $scope.$on('$destroy', function () {
+                    $scope.popover.remove();
+                });
+                // 在隐藏浮动框后执行
+                $scope.$on('popover.hidden', function () {
+                    // 执行代码
+                });
+                // 移除浮动框后执行
+                $scope.$on('popover.removed', function () {
+                    // 执行代码
+                });
+
+            }])
+    </script>
+</head>
+<body ng-controller="AppCtrl">
+<p>
+    <button ng-click="openPopover($event)">打开浮动框</button>
+</p>
+<script id="my-popover.html" type="text/ng-template">
+    <ion-popover-view>
+        <ion-header-bar>
+            <h1 class="title">我的浮动框标题</h1>
+        </ion-header-bar>
+        <ion-content>
+            Hello!
+        </ion-content>
+    </ion-popover-view>
+</script>
+</body>
+</html>
